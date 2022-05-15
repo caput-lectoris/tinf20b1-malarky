@@ -28,4 +28,9 @@ class BinaryOperation extends ArithmeticExpression {
 		return String.format( "(%s %c %s)", LEFT, TYPE.OPERATOR, RIGHT );
 	}
 	
+	@Override
+	<T> T accept( AstTraverser<T> traverser ){
+		return traverser.visit( this );
+	}
+	
 }

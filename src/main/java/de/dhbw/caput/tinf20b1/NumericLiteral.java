@@ -36,5 +36,10 @@ class NumericLiteral extends ArithmeticExpression {
 	public String toString( ){
 		return String.format( "%s%s", VALUE, DATATYPE );
 	}
+	
+	@Override
+	<T> T accept( AstTraverser<T> traverser ){
+		return traverser.visit( this );
+	}
 
 }

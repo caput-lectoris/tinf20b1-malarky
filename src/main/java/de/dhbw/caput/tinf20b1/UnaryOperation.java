@@ -26,4 +26,9 @@ class UnaryOperation extends ArithmeticExpression {
 		return String.format( "%c(%s)", TYPE.OPERATOR, BASE );
 	}
 	
+	@Override
+	<T> T accept( AstTraverser<T> traverser ){
+		return traverser.visit( this );
+	}
+	
 }
