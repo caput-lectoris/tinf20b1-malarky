@@ -1,4 +1,4 @@
-package de.dhbw.caput.tinf20b1;
+package de.dhbw.caput.tinf20b1.malarky;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,8 +13,9 @@ import org.junit.jupiter.api.Test;
 
 import de.dhbw.caput.tinf20b1.jasmine.JasminDefault;
 import de.dhbw.caput.tinf20b1.jasmine.Jasmine;
-import de.dhbw.caput.tinf20b1.malarky.MalarkyLexer;
-import de.dhbw.caput.tinf20b1.malarky.MalarkyParser;
+import de.dhbw.caput.tinf20b1.malarky.ast.ArithmeticExpression;
+import de.dhbw.caput.tinf20b1.malarky.ast.traversals.JavaBytecodeGenerator;
+import de.dhbw.caput.tinf20b1.malarky.ast.traversals.TypeInferer;
 
 class CompilerTest {
 	

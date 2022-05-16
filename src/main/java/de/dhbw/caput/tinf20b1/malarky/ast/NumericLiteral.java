@@ -1,12 +1,15 @@
-package de.dhbw.caput.tinf20b1;
+package de.dhbw.caput.tinf20b1.malarky.ast;
 
-class NumericLiteral extends ArithmeticExpression {
+import de.dhbw.caput.tinf20b1.malarky.Datatype;
+import de.dhbw.caput.tinf20b1.malarky.ast.traversals.AstTraverser;
+
+public class NumericLiteral extends ArithmeticExpression {
 	
 	private final String LEXEME;
-	final String VALUE;
+	public final String VALUE;
 	private final Datatype DATATYPE;
 	
-	NumericLiteral( String lexeme ){
+	public NumericLiteral( String lexeme ){
 		super( );
 		LEXEME = lexeme;
 		int split = positionOfSuffix( LEXEME );
@@ -38,7 +41,7 @@ class NumericLiteral extends ArithmeticExpression {
 	}
 	
 	@Override
-	<T> T accept( AstTraverser<T> traverser ){
+	public <T> T accept( AstTraverser<T> traverser ){
 		return traverser.visit( this );
 	}
 

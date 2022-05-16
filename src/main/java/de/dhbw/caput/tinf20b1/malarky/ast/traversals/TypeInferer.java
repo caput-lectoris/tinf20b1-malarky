@@ -1,4 +1,10 @@
-package de.dhbw.caput.tinf20b1;
+package de.dhbw.caput.tinf20b1.malarky.ast.traversals;
+
+import de.dhbw.caput.tinf20b1.malarky.Datatype;
+import de.dhbw.caput.tinf20b1.malarky.ast.ArithmeticExpression;
+import de.dhbw.caput.tinf20b1.malarky.ast.BinaryOperation;
+import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
+import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
 
 public class TypeInferer implements AstTraverser<Datatype> {
 	

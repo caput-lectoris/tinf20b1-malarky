@@ -1,8 +1,10 @@
-package de.dhbw.caput.tinf20b1;
+package de.dhbw.caput.tinf20b1.malarky.ast;
 
-class BinaryOperation extends ArithmeticExpression {
+import de.dhbw.caput.tinf20b1.malarky.ast.traversals.AstTraverser;
+
+public class BinaryOperation extends ArithmeticExpression {
 	
-	enum Type {
+	public enum Type {
 		ADDITION( '+' ), SUBTRACTION( '-' ), MULTIPLICATION( '*' ),
 		DIVISION( '/' ), POWER( '^' );
 		
@@ -13,10 +15,10 @@ class BinaryOperation extends ArithmeticExpression {
 		}
 	};
 	
-	final ArithmeticExpression LEFT, RIGHT;
-	final Type TYPE;
+	public final ArithmeticExpression LEFT, RIGHT;
+	public final Type TYPE;
 
-	BinaryOperation( ArithmeticExpression left, Type type, ArithmeticExpression right ){
+	public BinaryOperation( ArithmeticExpression left, Type type, ArithmeticExpression right ){
 		super( );
 		LEFT = left;
 		TYPE = type;
@@ -29,7 +31,7 @@ class BinaryOperation extends ArithmeticExpression {
 	}
 	
 	@Override
-	<T> T accept( AstTraverser<T> traverser ){
+	public <T> T accept( AstTraverser<T> traverser ){
 		return traverser.visit( this );
 	}
 	

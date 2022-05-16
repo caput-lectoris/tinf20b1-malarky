@@ -1,6 +1,6 @@
-package de.dhbw.caput.tinf20b1;
+package de.dhbw.caput.tinf20b1.malarky;
 
-enum Datatype {
+public enum Datatype {
 	
 	I8("i8"), I16("i16"), I32("i32"), I64("i64"), F32("f32"), F64("f64");
 	
@@ -10,7 +10,7 @@ enum Datatype {
 		SUFFIX = suffix;
 	}
 	
-	static Datatype evaluateTypeSuffix( String suffix ){
+	public static Datatype evaluateTypeSuffix( String suffix ){
 		switch( suffix ){
 			case "i8": return Datatype.I8;
 			case "i16": return Datatype.I16;

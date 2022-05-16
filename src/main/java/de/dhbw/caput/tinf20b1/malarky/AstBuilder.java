@@ -1,10 +1,7 @@
-package de.dhbw.caput.tinf20b1;
+package de.dhbw.caput.tinf20b1.malarky;
 
 import java.util.Stack;
 
-import de.dhbw.caput.tinf20b1.BinaryOperation.Type;
-import de.dhbw.caput.tinf20b1.malarky.MalarkyBaseVisitor;
-import de.dhbw.caput.tinf20b1.malarky.MalarkyLexer;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.AdditionContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.DivideContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.EmptyFactorContext;
@@ -19,6 +16,11 @@ import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.ProgramContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.SubtractionContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.SumContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.UnaryContext;
+import de.dhbw.caput.tinf20b1.malarky.ast.ArithmeticExpression;
+import de.dhbw.caput.tinf20b1.malarky.ast.BinaryOperation;
+import de.dhbw.caput.tinf20b1.malarky.ast.BinaryOperation.Type;
+import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
+import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
 
 class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
 	
