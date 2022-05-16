@@ -2,7 +2,7 @@ package de.dhbw.caput.tinf20b1;
 
 enum Datatype {
 	
-	I8("i8"), I16("i16"), I32("i32"), I64("i64");
+	I8("i8"), I16("i16"), I32("i32"), I64("i64"), F32("f32"), F64("f64");
 	
 	private final String SUFFIX;
 	
@@ -16,6 +16,8 @@ enum Datatype {
 			case "i16": return Datatype.I16;
 			case "i32": return Datatype.I32;
 			case "i64": return Datatype.I64;
+			case "f32": return Datatype.F32;
+			case "f64": return Datatype.F64;
 			default: throw new RuntimeException( "invalid type suffix" );
 		}
 	}

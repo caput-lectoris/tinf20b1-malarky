@@ -26,6 +26,15 @@ class CompilerTest {
 	
 	
 	@Test
+	void typeInference( ){
+		ArithmeticExpression ast = parse( "42 + 2 * -3f32 * 5/7" );
+		assertThat( ast.datatype() ).isNull( );
+		TypeInferer.runOn( ast );
+		assertThat( ast.datatype() ).isEqualTo( Datatype.F32 );
+	}
+	
+	
+	@Test
 	void codeGeneration( ) throws Exception {
 		InputStream solution = load( "GeneratedBytecode.j" );
 		ArithmeticExpression ast = parse( "42 + 2 * -3 * 5/7" );
