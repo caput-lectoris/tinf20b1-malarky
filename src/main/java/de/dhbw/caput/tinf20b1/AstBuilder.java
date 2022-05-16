@@ -43,10 +43,10 @@ class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
 	 */
 	@Override
 	public ArithmeticExpression visitSum( SumContext ctx ){
-		ArithmeticExpression unary = visit( ctx.multiplication() );
-		parameter.push( unary );
-		ArithmeticExpression sum = visit( ctx.summand() );
-		return sum;
+		ArithmeticExpression multiplication = visit( ctx.multiplication() );
+		parameter.push( multiplication );
+		ArithmeticExpression summand = visit( ctx.summand() );
+		return summand;
 	}
 
 	/*
@@ -136,7 +136,7 @@ class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
 	public ArithmeticExpression visitUnary( UnaryContext ctx ){
 		ArithmeticExpression unary = visit( ctx.power() );
 		if( MalarkyLexer.MINUS == ctx.start.getType() ){
-			ArithmeticExpression result = new UnaryOperation( parameter.pop(), UnaryOperation.Type.NEGATION );
+			ArithmeticExpression result = new UnaryOperation( unary, UnaryOperation.Type.NEGATION );
 			return result;
 		}
 		return unary;

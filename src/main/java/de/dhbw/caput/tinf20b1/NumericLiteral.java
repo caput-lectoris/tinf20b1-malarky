@@ -3,7 +3,7 @@ package de.dhbw.caput.tinf20b1;
 class NumericLiteral extends ArithmeticExpression {
 	
 	private final String LEXEME;
-	private final String VALUE;
+	final String VALUE;
 	private final Datatype DATATYPE;
 	
 	NumericLiteral( String lexeme ){
