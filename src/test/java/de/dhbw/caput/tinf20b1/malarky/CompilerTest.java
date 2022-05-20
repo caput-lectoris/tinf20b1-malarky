@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import de.dhbw.caput.tinf20b1.jasmine.JasminDefault;
 import de.dhbw.caput.tinf20b1.jasmine.Jasmine;
 import de.dhbw.caput.tinf20b1.malarky.ast.ArithmeticExpression;
+import de.dhbw.caput.tinf20b1.malarky.ast.traversals.ImplicitCaster;
 import de.dhbw.caput.tinf20b1.malarky.ast.traversals.JavaBytecodeGenerator;
 import de.dhbw.caput.tinf20b1.malarky.ast.traversals.TypeInferer;
 
@@ -32,6 +33,22 @@ class CompilerTest {
 		assertThat( ast.datatype() ).isNull( );
 		TypeInferer.runOn( ast );
 		assertThat( ast.datatype() ).isEqualTo( Datatype.F32 );
+	}
+	
+	
+	@Test
+	void implicitCasting( ){
+		String expression = "42 / 2i8 ^ 3 ^ 5f32 / 7i16";
+		MalarkyLexer lexer = new MalarkyLexer( CharStreams.fromString(expression) );
+		CommonTokenStream tokens = new CommonTokenStream( lexer );
+		MalarkyParser parser = new MalarkyParser( tokens );
+		ParseTree tree = parser.program();
+		AstBuilder astBuilder = new AstBuilder( );
+		ArithmeticExpression ast = astBuilder.visit( tree );
+		
+		TypeInferer.runOn( ast );
+		ArithmeticExpression ast2 = ImplicitCaster.runOn( ast );
+		assertThat( ast2.toString() ).isEqualTo( "((f32(42i32) / (f32(2i8) ^ (f32(3i32) ^ 5f32))) / f32(7i16))" );
 	}
 	
 	

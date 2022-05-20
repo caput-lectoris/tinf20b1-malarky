@@ -2,6 +2,7 @@ package de.dhbw.caput.tinf20b1.malarky.ast.traversals;
 
 import de.dhbw.caput.tinf20b1.malarky.ast.BinaryOperation;
 import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
+import de.dhbw.caput.tinf20b1.malarky.ast.TypeCast;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
 
 public interface AstTraverser<T> {
@@ -20,5 +21,11 @@ public interface AstTraverser<T> {
 		return visitPost( op, left, right );
 	}
 	T visitPost( BinaryOperation op, T left, T right );
+	
+	default T visit( TypeCast cast ){
+		T base = cast.BASE.accept( this );
+		return visitPost( cast, base);
+	}
+	T visitPost( TypeCast cast, T base );
 
 }

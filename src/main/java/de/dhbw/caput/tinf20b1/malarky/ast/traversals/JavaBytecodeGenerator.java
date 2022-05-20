@@ -1,8 +1,10 @@
 package de.dhbw.caput.tinf20b1.malarky.ast.traversals;
 
 import de.dhbw.caput.tinf20b1.jasmine.JasminMethodBody;
+import de.dhbw.caput.tinf20b1.malarky.InstructionSet;
 import de.dhbw.caput.tinf20b1.malarky.ast.BinaryOperation;
 import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
+import de.dhbw.caput.tinf20b1.malarky.ast.TypeCast;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
 
 public class JavaBytecodeGenerator implements AstTraverser<String> {
@@ -35,6 +37,12 @@ public class JavaBytecodeGenerator implements AstTraverser<String> {
 			case POWER: BODY.appendLine( "ipow" ); return null;
 		}
 		throw new RuntimeException();
+	}
+
+	@Override
+	public String visitPost( TypeCast cast, String base ){
+		String instruction = InstructionSet.findBestMatchFor( cast );
+		return String.format( "%s\n%s", base, instruction );
 	}
 
 }
