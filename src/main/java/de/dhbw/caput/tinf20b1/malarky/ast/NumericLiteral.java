@@ -7,7 +7,6 @@ public class NumericLiteral extends ArithmeticExpression {
 	
 	private final String LEXEME;
 	public final String VALUE;
-	private final Datatype DATATYPE;
 	
 	public NumericLiteral( String lexeme ){
 		super( );
@@ -16,9 +15,9 @@ public class NumericLiteral extends ArithmeticExpression {
 		VALUE = LEXEME.substring(0, split);
 		String suffix = LEXEME.substring( split );
 		if( suffix.isEmpty() ){
-			DATATYPE = Datatype.I32;
+			datatype = Datatype.I32;
 		}else{
-			DATATYPE = Datatype.evaluateTypeSuffix( suffix );
+			datatype = Datatype.evaluateTypeSuffix( suffix );
 		}
 	}
 	
@@ -37,7 +36,7 @@ public class NumericLiteral extends ArithmeticExpression {
 	
 	@Override
 	public String toString( ){
-		return String.format( "%s%s", VALUE, DATATYPE );
+		return String.format( "%s%s", VALUE, datatype );
 	}
 	
 	@Override

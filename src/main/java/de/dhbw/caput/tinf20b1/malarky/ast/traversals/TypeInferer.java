@@ -14,21 +14,20 @@ public class TypeInferer implements AstTraverser<Datatype> {
 	}
 	
 	@Override
-	public Datatype visit( NumericLiteral op ){
-		// TODO Auto-generated method stub
-		return null;
+	public Datatype visit( NumericLiteral literal ){
+		return literal.datatype( );
 	}
 	
 	@Override
-	public Datatype visitPost( UnaryOperation op, Datatype left ){
-		// TODO Auto-generated method stub
-		return null;
+	public Datatype visitPost( UnaryOperation op, Datatype base ){
+		op.set( base );
+		return op.datatype( );
 	}
 
 	@Override
 	public Datatype visitPost( BinaryOperation op, Datatype left, Datatype right ){
-		// TODO Auto-generated method stub
-		return null;
+		op.set( Datatype.getPrincipleType(left, right) );
+		return op.datatype( );
 	}
 
 }

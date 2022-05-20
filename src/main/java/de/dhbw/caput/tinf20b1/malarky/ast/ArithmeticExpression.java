@@ -7,7 +7,7 @@ public abstract class ArithmeticExpression {
 	
 	protected Datatype datatype;
 	
-	void set( Datatype datatype ){
+	public void set( Datatype datatype ){
 		this.datatype = datatype;
 	}
 	

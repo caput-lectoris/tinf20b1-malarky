@@ -12,13 +12,13 @@ public interface AstTraverser<T> {
 		T base = op.BASE.accept( this );
 		return visitPost( op, base);
 	}
-	T visitPost( UnaryOperation binOp, T left );
+	T visitPost( UnaryOperation op, T base );
 	
 	default T visit( BinaryOperation op ){
 		T left = op.LEFT.accept( this );
 		T right = op.RIGHT.accept( this );
 		return visitPost( op, left, right );
 	}
-	T visitPost( BinaryOperation binOp, T left, T right );
+	T visitPost( BinaryOperation op, T left, T right );
 
 }
