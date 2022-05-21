@@ -70,7 +70,7 @@ class CompilerTest {
 		jasmine.MAIN_METHOD.setLocalsLimit(2);
 		
 		String expectedOutput = new String( solution.readAllBytes(), StandardCharsets.UTF_8 );
-		assertThat( jasmine.toString() ).isEqualTo( expectedOutput );
+		assertThat( jasmine.toString() ).isEqualToNormalizingNewlines( expectedOutput );
 		
 		String result;
 		try( InputStream in = new ByteArrayInputStream(jasmine.toString().getBytes()) ){

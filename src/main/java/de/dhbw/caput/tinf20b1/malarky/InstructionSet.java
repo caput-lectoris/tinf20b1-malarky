@@ -22,10 +22,10 @@ public class InstructionSet {
 		switch( literal.datatype() ){
 			case I8:  return "bipush";
 			case I16: return "sipush";
-			case I32: return "ldc #? //";
-			case I64: return "ldc #? //";
-			case F32: return "ldc #? //";
-			case F64: return "ldc #? //";
+			case I32: return "ldc " + literal.VALUE;
+			case I64: return "ldc " + literal.VALUE;
+			case F32: return "ldc " + literal.VALUE;
+			case F64: return "ldc " + literal.VALUE;
 		}
 		throw new RuntimeException();
 	}
