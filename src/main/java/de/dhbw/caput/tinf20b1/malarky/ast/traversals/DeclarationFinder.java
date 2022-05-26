@@ -13,6 +13,7 @@ import de.dhbw.caput.tinf20b1.malarky.ast.TypeCast;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
 import de.dhbw.caput.tinf20b1.malarky.ast.Variable;
 import de.dhbw.caput.tinf20b1.malarky.ast.VariableDeclaration;
+import de.dhbw.caput.tinf20b1.malarky.ast.WhileStatement;
 
 public class DeclarationFinder implements AstTraverser<String> {
 	
@@ -82,6 +83,11 @@ public class DeclarationFinder implements AstTraverser<String> {
 			throw new RuntimeException( "variable must be declared before use" );
 		}
 		var.setDeclaration( decl );
+		return null;
+	}
+
+	@Override
+	public String visitPost( WhileStatement var ){
 		return null;
 	}
 

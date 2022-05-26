@@ -24,6 +24,8 @@ import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.UnaryContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.VarDeclContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.VariableContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.VariableDeclarationContext;
+import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.WhileLoopContext;
+import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.WhileStatementContext;
 import de.dhbw.caput.tinf20b1.malarky.ast.ArithmeticExpression;
 import de.dhbw.caput.tinf20b1.malarky.ast.Assignment;
 import de.dhbw.caput.tinf20b1.malarky.ast.AstNode;
@@ -35,6 +37,7 @@ import de.dhbw.caput.tinf20b1.malarky.ast.Statement;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
 import de.dhbw.caput.tinf20b1.malarky.ast.Variable;
 import de.dhbw.caput.tinf20b1.malarky.ast.VariableDeclaration;
+import de.dhbw.caput.tinf20b1.malarky.ast.WhileStatement;
 
 class AstBuilder extends MalarkyBaseVisitor<AstNode> {
 	
@@ -97,6 +100,15 @@ class AstBuilder extends MalarkyBaseVisitor<AstNode> {
 	}
 	
 	/*
+	 * statement : whileStatement  #whileLoop ;
+	 */
+	@Override
+	public AstNode visitWhileLoop( WhileLoopContext ctx ){
+		AstNode assignment = visit( ctx.whileStatement() );
+		return assignment;
+	}
+	
+	/*
 	 * variableDeclaration : 'let' name=IDENTIFIER COLON type=IDENTIFIER SEMICOLON ;
 	 */
 	@Override
@@ -117,6 +129,20 @@ class AstBuilder extends MalarkyBaseVisitor<AstNode> {
 		String name = ctx.name.getText();
 		Assignment assignment = new Assignment( name, expr );
 		return assignment;
+	}
+	
+	/*
+	 * whileStatement : 'while' LPAREN sum RPAREN LBRACE statements RBRACE ;
+	 */
+	@Override
+	public AstNode visitWhileStatement( WhileStatementContext ctx ){
+		ArithmeticExpression expr = (ArithmeticExpression) visit( ctx.sum() );
+		BlockStatement previousBlock = block;
+		block = new BlockStatement();
+		visit( ctx.statements() );
+		WhileStatement whileStatement = new WhileStatement( expr, block );
+		block = previousBlock;
+		return whileStatement;
 	}
 	
 	/*

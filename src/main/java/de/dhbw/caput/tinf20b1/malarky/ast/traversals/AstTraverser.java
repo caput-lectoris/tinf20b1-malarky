@@ -12,6 +12,7 @@ import de.dhbw.caput.tinf20b1.malarky.ast.TypeCast;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
 import de.dhbw.caput.tinf20b1.malarky.ast.Variable;
 import de.dhbw.caput.tinf20b1.malarky.ast.VariableDeclaration;
+import de.dhbw.caput.tinf20b1.malarky.ast.WhileStatement;
 
 public interface AstTraverser<T> {
 	
@@ -61,5 +62,10 @@ public interface AstTraverser<T> {
 		return visitPost( var );
 	}
 	T visitPost( Variable var );
+	
+	default T visit( WhileStatement var ){
+		return visitPost( var );
+	}
+	T visitPost( WhileStatement var );
 
 }

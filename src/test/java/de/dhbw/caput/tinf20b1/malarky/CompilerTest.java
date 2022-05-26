@@ -25,6 +25,13 @@ import de.dhbw.caput.tinf20b1.malarky.ast.traversals.TypeInferer;
 class CompilerTest {
 	
 	@Test
+	void whileStatement( ){
+		AstNode ast = parse( "let x : i32; while( x ){ x := 5; }" );
+		assertThat( ast.toString() ).isEqualTo( "i32 x;while(x){x = 5i32;}" );
+	}
+	
+	
+	@Test
 	void syntacticAnalysis( ){
 		AstNode ast = parse( "let x : i32; x := 42 / 2i8 ^ 3 ^ 5 / 7i16 ;" );
 		assertThat( ast.toString() ).isEqualTo( "i32 x;x = ((42i32 / (2i8 ^ (3i32 ^ 5i32))) / 7i16);" );

@@ -12,6 +12,7 @@ statements
 statement
     : variableDeclaration   #varDecl
     | assignment            #assign
+    | whileStatement        #whileLoop
     ;
 
 variableDeclaration
@@ -20,6 +21,10 @@ variableDeclaration
 
 assignment
     : name=IDENTIFIER ASSIGN sum SEMICOLON
+    ;
+
+whileStatement
+    : 'while' LPAREN sum RPAREN LBRACE statements RBRACE
     ;
 
 sum
@@ -103,6 +108,8 @@ fragment DEC_DIGIT : [0-9] ;
 
 LPAREN : '(' ;
 RPAREN : ')' ;
+LBRACE : '{' ;
+RBRACE : '}' ;
 
 
 // operators

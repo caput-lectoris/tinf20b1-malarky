@@ -12,6 +12,7 @@ import de.dhbw.caput.tinf20b1.malarky.ast.TypeCast;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
 import de.dhbw.caput.tinf20b1.malarky.ast.Variable;
 import de.dhbw.caput.tinf20b1.malarky.ast.VariableDeclaration;
+import de.dhbw.caput.tinf20b1.malarky.ast.WhileStatement;
 
 public class TypeInferer implements AstTraverser<Datatype> {
 	
@@ -62,6 +63,11 @@ public class TypeInferer implements AstTraverser<Datatype> {
 	@Override
 	public Datatype visitPost( Variable var ){
 		return var.getDeclaration().DATATYPE;
+	}
+
+	@Override
+	public Datatype visitPost( WhileStatement var ){
+		return null;
 	}
 
 }

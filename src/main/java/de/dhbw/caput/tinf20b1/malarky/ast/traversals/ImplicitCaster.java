@@ -13,6 +13,7 @@ import de.dhbw.caput.tinf20b1.malarky.ast.TypeCast;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
 import de.dhbw.caput.tinf20b1.malarky.ast.Variable;
 import de.dhbw.caput.tinf20b1.malarky.ast.VariableDeclaration;
+import de.dhbw.caput.tinf20b1.malarky.ast.WhileStatement;
 
 public class ImplicitCaster implements AstTraverser<AstNode> {
 	
@@ -77,6 +78,11 @@ public class ImplicitCaster implements AstTraverser<AstNode> {
 	@Override
 	public AstNode visitPost( Variable var ){
 		return var;
+	}
+
+	@Override
+	public AstNode visitPost( WhileStatement var ){
+		return null;
 	}
 
 }
