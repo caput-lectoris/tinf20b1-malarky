@@ -14,27 +14,35 @@ public class ImplicitCaster implements AstTraverser<ArithmeticExpression> {
 	}
 
 	@Override
-	public ArithmeticExpression visit(NumericLiteral literal) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArithmeticExpression visit( NumericLiteral literal ){
+		return literal;
 	}
 
 	@Override
-	public ArithmeticExpression visitPost(UnaryOperation op, ArithmeticExpression base) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArithmeticExpression visitPost( UnaryOperation op, ArithmeticExpression base ){
+		return new UnaryOperation( (ArithmeticExpression) base, op.TYPE );
 	}
 
 	@Override
-	public ArithmeticExpression visitPost(BinaryOperation op, ArithmeticExpression left, ArithmeticExpression right) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArithmeticExpression visitPost( BinaryOperation op, ArithmeticExpression left, ArithmeticExpression right ){
+		if( op.datatype() != left.datatype() ){
+			BinaryOperation newOp = new BinaryOperation(
+					new TypeCast(op.datatype(), left), op.TYPE, right );
+			newOp.set( op.datatype() );
+			return newOp;
+		}
+		if( op.datatype() != right.datatype() ){
+			BinaryOperation newOp =  new BinaryOperation(
+					left, op.TYPE, new TypeCast(op.datatype(), right) );
+			newOp.set( op.datatype() );
+			return newOp;
+		}
+		return op;
 	}
 
 	@Override
-	public ArithmeticExpression visitPost(TypeCast cast, ArithmeticExpression base) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArithmeticExpression visitPost( TypeCast cast, ArithmeticExpression base ){
+		return new TypeCast( cast.datatype(), (ArithmeticExpression)base );
 	}
 
 }
