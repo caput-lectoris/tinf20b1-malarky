@@ -11,7 +11,8 @@ import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.ImpotenceContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.LiteralContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.MultiplicationContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.MultiplyContext;
-import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.ParenContext;
+import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.NumberContext;
+import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.ParenthesisContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.ProgramContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.SubtractionContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.SumContext;
@@ -165,15 +166,19 @@ class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
 	}
 
 	/*
-	 * paren
-	 *     : literal
-	 *     | LPAREN sum RPAREN
-	 *     ;
+	 * paren : literal  #number ;
 	 */
 	@Override
-	public ArithmeticExpression visitParen( ParenContext ctx ){
-		ArithmeticExpression temp = visitChildren( ctx );
-		return temp;
+	public ArithmeticExpression visitNumber( NumberContext ctx ){
+		return visit( ctx.literal() );
+	}
+	
+	/*
+	 * paren : LPAREN sum RPAREN  #parenthesis ;
+	 */
+	@Override
+	public ArithmeticExpression visitParenthesis( ParenthesisContext ctx ){
+		return visit( ctx.sum() );
 	}
 
 	/*

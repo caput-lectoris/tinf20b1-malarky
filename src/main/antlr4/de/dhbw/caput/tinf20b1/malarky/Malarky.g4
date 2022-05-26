@@ -35,8 +35,8 @@ power
     ;
 
 paren
-    : literal
-    | LPAREN sum RPAREN
+    : literal            #number
+    | LPAREN sum RPAREN  #parenthesis
     ;
 
 literal
