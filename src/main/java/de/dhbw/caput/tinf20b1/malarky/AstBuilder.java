@@ -22,6 +22,7 @@ import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.SubtractionContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.SumContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.UnaryContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.VarDeclContext;
+import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.VariableContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.VariableDeclarationContext;
 import de.dhbw.caput.tinf20b1.malarky.ast.ArithmeticExpression;
 import de.dhbw.caput.tinf20b1.malarky.ast.Assignment;
@@ -32,6 +33,7 @@ import de.dhbw.caput.tinf20b1.malarky.ast.BlockStatement;
 import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
 import de.dhbw.caput.tinf20b1.malarky.ast.Statement;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
+import de.dhbw.caput.tinf20b1.malarky.ast.Variable;
 import de.dhbw.caput.tinf20b1.malarky.ast.VariableDeclaration;
 
 class AstBuilder extends MalarkyBaseVisitor<AstNode> {
@@ -267,6 +269,15 @@ class AstBuilder extends MalarkyBaseVisitor<AstNode> {
 	public ArithmeticExpression visitLiteral( LiteralContext ctx ){
 		ArithmeticExpression literal = new NumericLiteral( ctx.getText() );
 		return literal;
+	}
+	
+	/*
+	 * statement : IDENTIFIER  #variable ;
+	 */
+	@Override
+	public ArithmeticExpression visitVariable( VariableContext ctx ){
+		String name = ctx.getText();
+		return new Variable( name );
 	}
 
 }

@@ -10,6 +10,7 @@ import de.dhbw.caput.tinf20b1.malarky.ast.BlockStatement;
 import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
 import de.dhbw.caput.tinf20b1.malarky.ast.TypeCast;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
+import de.dhbw.caput.tinf20b1.malarky.ast.Variable;
 import de.dhbw.caput.tinf20b1.malarky.ast.VariableDeclaration;
 
 public class TypeInferer implements AstTraverser<Datatype> {
@@ -56,6 +57,11 @@ public class TypeInferer implements AstTraverser<Datatype> {
 	@Override
 	public Datatype visitPost( BlockStatement block, List<Datatype> statements ){
 		return null;
+	}
+
+	@Override
+	public Datatype visitPost( Variable var ){
+		return var.getDeclaration().DATATYPE;
 	}
 
 }

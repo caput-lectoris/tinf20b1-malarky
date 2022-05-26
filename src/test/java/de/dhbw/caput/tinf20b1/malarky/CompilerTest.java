@@ -76,7 +76,7 @@ class CompilerTest {
 	@Test
 	void codeGeneration( ) throws Exception {
 		InputStream solution = load( "GeneratedBytecode.j" );
-		AstNode ast = parse( "let x : i32; x := 42 + 2 * -3 * 5/7 ;" );
+		AstNode ast = parse( "let x : i32; x := 2; x := 42 + x * -3 * 5/7 ;" );
 		DeclarationFinder.runOn( ast );
 		
 		JasminDefault jasmine = new JasminDefault();

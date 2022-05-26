@@ -13,8 +13,10 @@
   getstatic java/lang/System/out Ljava/io/PrintStream;
   iconst_0
   istore 0
-  bipush 42
   bipush 2
+  istore 0
+  bipush 42
+  iload 0
   bipush 3
   ineg
   imul

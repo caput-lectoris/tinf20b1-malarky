@@ -11,6 +11,7 @@ import de.dhbw.caput.tinf20b1.malarky.ast.BlockStatement;
 import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
 import de.dhbw.caput.tinf20b1.malarky.ast.TypeCast;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
+import de.dhbw.caput.tinf20b1.malarky.ast.Variable;
 import de.dhbw.caput.tinf20b1.malarky.ast.VariableDeclaration;
 
 public class DeclarationFinder implements AstTraverser<String> {
@@ -71,6 +72,16 @@ public class DeclarationFinder implements AstTraverser<String> {
 
 	@Override
 	public String visitPost( BlockStatement block, List<String> stmts ){
+		return null;
+	}
+
+	@Override
+	public String visitPost( Variable var ){
+		VariableDeclaration decl = DECLARATIONS.get( var.NAME );
+		if( null == decl ){
+			throw new RuntimeException( "variable must be declared before use" );
+		}
+		var.setDeclaration( decl );
 		return null;
 	}
 

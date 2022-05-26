@@ -10,6 +10,7 @@ import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
 import de.dhbw.caput.tinf20b1.malarky.ast.Statement;
 import de.dhbw.caput.tinf20b1.malarky.ast.TypeCast;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
+import de.dhbw.caput.tinf20b1.malarky.ast.Variable;
 import de.dhbw.caput.tinf20b1.malarky.ast.VariableDeclaration;
 
 public interface AstTraverser<T> {
@@ -55,5 +56,10 @@ public interface AstTraverser<T> {
 		return visitPost( block, stmts );
 	}
 	T visitPost( BlockStatement block, List<T> stmts );
+	
+	default T visit( Variable var ){
+		return visitPost( var );
+	}
+	T visitPost( Variable var );
 
 }

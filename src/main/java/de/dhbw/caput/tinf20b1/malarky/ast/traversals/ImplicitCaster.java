@@ -11,6 +11,7 @@ import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
 import de.dhbw.caput.tinf20b1.malarky.ast.Statement;
 import de.dhbw.caput.tinf20b1.malarky.ast.TypeCast;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
+import de.dhbw.caput.tinf20b1.malarky.ast.Variable;
 import de.dhbw.caput.tinf20b1.malarky.ast.VariableDeclaration;
 
 public class ImplicitCaster implements AstTraverser<AstNode> {
@@ -71,6 +72,11 @@ public class ImplicitCaster implements AstTraverser<AstNode> {
 			newBlock.STATEMENTS.add( (Statement)astNode );
 		}
 		return newBlock;
+	}
+
+	@Override
+	public AstNode visitPost( Variable var ){
+		return var;
 	}
 
 }

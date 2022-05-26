@@ -54,6 +54,7 @@ power
 
 paren
     : literal            #number
+    | IDENTIFIER         #variable
     | LPAREN sum RPAREN  #parenthesis
     ;
 
