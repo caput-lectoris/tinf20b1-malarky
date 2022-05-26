@@ -1,11 +1,16 @@
 package de.dhbw.caput.tinf20b1.malarky.ast.traversals;
 
+import java.util.List;
+
 import de.dhbw.caput.tinf20b1.jasmine.JasminMethodBody;
 import de.dhbw.caput.tinf20b1.malarky.InstructionSet;
+import de.dhbw.caput.tinf20b1.malarky.ast.Assignment;
 import de.dhbw.caput.tinf20b1.malarky.ast.BinaryOperation;
+import de.dhbw.caput.tinf20b1.malarky.ast.BlockStatement;
 import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
 import de.dhbw.caput.tinf20b1.malarky.ast.TypeCast;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
+import de.dhbw.caput.tinf20b1.malarky.ast.VariableDeclaration;
 
 public class JavaBytecodeGenerator implements AstTraverser<String> {
 	
@@ -43,6 +48,24 @@ public class JavaBytecodeGenerator implements AstTraverser<String> {
 	public String visitPost( TypeCast cast, String base ){
 		String instruction = InstructionSet.findBestMatchFor( cast );
 		return String.format( "%s\n%s", base, instruction );
+	}
+	
+	@Override
+	public String visitPost( VariableDeclaration decl ){
+		BODY.appendLine( "iconst_0" );
+		BODY.appendLine( "istore " + decl.getVariableTableSlot() );
+		return null;
+	}
+	
+	@Override
+	public String visitPost( Assignment assignment, String expr ){
+		BODY.appendLine( "istore " + assignment.getDeclaration().getVariableTableSlot() );
+		return null;
+	}
+	
+	@Override
+	public String visitPost( BlockStatement block, List<String> statements ){
+		return null;
 	}
 
 }

@@ -3,42 +3,118 @@ package de.dhbw.caput.tinf20b1.malarky;
 import java.util.Stack;
 
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.AdditionContext;
+import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.AssignContext;
+import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.AssignmentContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.DivideContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.EmptyFactorContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.EmptySummandContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.ExponentiationContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.ImpotenceContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.LiteralContext;
+import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.MultiStatementsContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.MultiplicationContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.MultiplyContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.NumberContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.ParenthesisContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.ProgramContext;
+import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.SingleStatementContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.SubtractionContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.SumContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.UnaryContext;
+import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.VarDeclContext;
+import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.VariableDeclarationContext;
 import de.dhbw.caput.tinf20b1.malarky.ast.ArithmeticExpression;
+import de.dhbw.caput.tinf20b1.malarky.ast.Assignment;
+import de.dhbw.caput.tinf20b1.malarky.ast.AstNode;
 import de.dhbw.caput.tinf20b1.malarky.ast.BinaryOperation;
 import de.dhbw.caput.tinf20b1.malarky.ast.BinaryOperation.Type;
+import de.dhbw.caput.tinf20b1.malarky.ast.BlockStatement;
 import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
+import de.dhbw.caput.tinf20b1.malarky.ast.Statement;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
+import de.dhbw.caput.tinf20b1.malarky.ast.VariableDeclaration;
 
-class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
+class AstBuilder extends MalarkyBaseVisitor<AstNode> {
 	
 	private Stack<ArithmeticExpression> parameter;
+	private BlockStatement block;
 	
 	AstBuilder( ){
 		super( );
 		parameter = new Stack<>();
+		block = null;
 	}
 
 	/*
-	 * program : sum EOF ;
+	 * program : statements EOF ;
 	 */
 	@Override
-	public ArithmeticExpression visitProgram( ProgramContext ctx ){
-		ArithmeticExpression program = visit( ctx.sum() );
-		return program;
+	public AstNode visitProgram( ProgramContext ctx ){
+		block = new BlockStatement();
+		visit( ctx.statements() );
+		return block;
+	}
+	
+	/*
+	 * statements : statement  #singleStatement
+	 */
+	@Override
+	public AstNode visitSingleStatement( SingleStatementContext ctx ){
+		Statement statement = (Statement) visit( ctx.statement() );
+		block.STATEMENTS.add( statement );
+		return statement;
+	}
+	
+	/*
+	 * statements : statement statements  #multiStatements ;
+	 */
+	@Override
+	public AstNode visitMultiStatements( MultiStatementsContext ctx ){
+		Statement statement = (Statement) visit( ctx.statement() );
+		block.STATEMENTS.add( statement );
+		visit( ctx.statements() );
+		return block;
+	}
+	
+	/*
+	 * statement : variableDeclaration  #varDecl ;
+	 */
+	@Override
+	public AstNode visitVarDecl( VarDeclContext ctx ){
+		AstNode declaration = visit( ctx.variableDeclaration() );
+		return declaration;
+	}
+	
+	/*
+	 * statement : assignment  #assign ;
+	 */
+	@Override
+	public AstNode visitAssign( AssignContext ctx ){
+		AstNode assignment = visit( ctx.assignment() );
+		return assignment;
+	}
+	
+	/*
+	 * variableDeclaration : 'let' name=IDENTIFIER COLON type=IDENTIFIER SEMICOLON ;
+	 */
+	@Override
+	public AstNode visitVariableDeclaration( VariableDeclarationContext ctx ){
+		String name = ctx.name.getText();
+		String type = ctx.type.getText();
+		Datatype datatype = Datatype.evaluateTypeSuffix( type );
+		VariableDeclaration var = new VariableDeclaration( name, datatype );
+		return var;
+	}
+	
+	/*
+	 * assignment : name=IDENTIFIER ASSIGN sum SEMICOLON ;
+	 */
+	@Override
+	public AstNode visitAssignment( AssignmentContext ctx ){
+		ArithmeticExpression expr = (ArithmeticExpression) visit( ctx.sum() );
+		String name = ctx.name.getText();
+		Assignment assignment = new Assignment( name, expr );
+		return assignment;
 	}
 	
 	/*
@@ -46,9 +122,9 @@ class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
 	 */
 	@Override
 	public ArithmeticExpression visitSum( SumContext ctx ){
-		ArithmeticExpression multiplication = visit( ctx.multiplication() );
+		ArithmeticExpression multiplication = (ArithmeticExpression) visit( ctx.multiplication() );
 		parameter.push( multiplication );
-		ArithmeticExpression summand = visit( ctx.summand() );
+		ArithmeticExpression summand = (ArithmeticExpression) visit( ctx.summand() );
 		return summand;
 	}
 
@@ -57,10 +133,10 @@ class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
 	 */
 	@Override
 	public ArithmeticExpression visitAddition( AdditionContext ctx ){
-		ArithmeticExpression multiplication = visit( ctx.multiplication() );
+		ArithmeticExpression multiplication = (ArithmeticExpression) visit( ctx.multiplication() );
 		ArithmeticExpression sum = new BinaryOperation( parameter.pop(), Type.ADDITION, multiplication );
 		parameter.push( sum );
-		ArithmeticExpression result = visit( ctx.summand() );
+		ArithmeticExpression result = (ArithmeticExpression) visit( ctx.summand() );
 		return result;
 	}
 	
@@ -69,10 +145,10 @@ class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
 	 */
 	@Override
 	public ArithmeticExpression visitSubtraction( SubtractionContext ctx ){
-		ArithmeticExpression multiplication = visit( ctx.multiplication() );
+		ArithmeticExpression multiplication = (ArithmeticExpression) visit( ctx.multiplication() );
 		ArithmeticExpression difference = new BinaryOperation( parameter.pop(), Type.SUBTRACTION, multiplication );
 		parameter.push( difference );
-		ArithmeticExpression result = visit( ctx.summand() );
+		ArithmeticExpression result = (ArithmeticExpression) visit( ctx.summand() );
 		return result;
 	}
 	
@@ -90,9 +166,9 @@ class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
 	 */
 	@Override
 	public ArithmeticExpression visitMultiplication( MultiplicationContext ctx ){
-		ArithmeticExpression unary = visit( ctx.unary() );
+		ArithmeticExpression unary = (ArithmeticExpression) visit( ctx.unary() );
 		parameter.push( unary );
-		ArithmeticExpression factor = visit( ctx.factor() );
+		ArithmeticExpression factor = (ArithmeticExpression) visit( ctx.factor() );
 		return factor;
 	}
 
@@ -101,10 +177,10 @@ class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
 	 */
 	@Override
 	public ArithmeticExpression visitMultiply( MultiplyContext ctx ){
-		ArithmeticExpression unary = visit( ctx.unary() );
+		ArithmeticExpression unary = (ArithmeticExpression) visit( ctx.unary() );
 		ArithmeticExpression product = new BinaryOperation( parameter.pop(), Type.MULTIPLICATION, unary );
 		parameter.push( product );
-		ArithmeticExpression result = visit( ctx.factor() );
+		ArithmeticExpression result = (ArithmeticExpression) visit( ctx.factor() );
 		return result;
 	}
 	
@@ -113,10 +189,10 @@ class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
 	 */
 	@Override
 	public ArithmeticExpression visitDivide( DivideContext ctx ){
-		ArithmeticExpression unary = visit( ctx.unary() );
+		ArithmeticExpression unary = (ArithmeticExpression) visit( ctx.unary() );
 		ArithmeticExpression quotient = new BinaryOperation( parameter.pop(), Type.DIVISION, unary );
 		parameter.push( quotient );
-		ArithmeticExpression result = visit( ctx.factor() );
+		ArithmeticExpression result = (ArithmeticExpression) visit( ctx.factor() );
 		return result;
 	}
 	
@@ -137,7 +213,7 @@ class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
 	 */
 	@Override
 	public ArithmeticExpression visitUnary( UnaryContext ctx ){
-		ArithmeticExpression unary = visit( ctx.power() );
+		ArithmeticExpression unary = (ArithmeticExpression) visit( ctx.power() );
 		if( MalarkyLexer.MINUS == ctx.start.getType() ){
 			ArithmeticExpression result = new UnaryOperation( unary, UnaryOperation.Type.NEGATION );
 			return result;
@@ -150,7 +226,7 @@ class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
 	 */
 	@Override
 	public ArithmeticExpression visitImpotence( ImpotenceContext ctx ){
-		ArithmeticExpression temp = visitChildren( ctx );
+		ArithmeticExpression temp = (ArithmeticExpression) visitChildren( ctx );
 		return temp;
 	}
 	
@@ -159,8 +235,8 @@ class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
 	 */
 	@Override
 	public ArithmeticExpression visitExponentiation( ExponentiationContext ctx ){
-		ArithmeticExpression paren = visit( ctx.paren() );
-		ArithmeticExpression power = visit( ctx.power() );
+		ArithmeticExpression paren = (ArithmeticExpression) visit( ctx.paren() );
+		ArithmeticExpression power = (ArithmeticExpression) visit( ctx.power() );
 		ArithmeticExpression result = new BinaryOperation( paren, Type.POWER, power );
 		return result;
 	}
@@ -170,7 +246,7 @@ class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
 	 */
 	@Override
 	public ArithmeticExpression visitNumber( NumberContext ctx ){
-		return visit( ctx.literal() );
+		return (ArithmeticExpression) visit( ctx.literal() );
 	}
 	
 	/*
@@ -178,7 +254,7 @@ class AstBuilder extends MalarkyBaseVisitor<ArithmeticExpression> {
 	 */
 	@Override
 	public ArithmeticExpression visitParenthesis( ParenthesisContext ctx ){
-		return visit( ctx.sum() );
+		return (ArithmeticExpression) visit( ctx.sum() );
 	}
 
 	/*

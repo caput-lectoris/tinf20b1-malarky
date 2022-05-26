@@ -1,7 +1,25 @@
 grammar Malarky;
 
 program
-    : sum EOF
+    : statements EOF
+    ;
+
+statements
+    : statement statements  #multiStatements
+    | statement             #singleStatement
+    ;
+
+statement
+    : variableDeclaration   #varDecl
+    | assignment            #assign
+    ;
+
+variableDeclaration
+    : 'let' name=IDENTIFIER COLON type=IDENTIFIER SEMICOLON
+    ;
+
+assignment
+    : name=IDENTIFIER ASSIGN sum SEMICOLON
     ;
 
 sum
@@ -88,11 +106,20 @@ RPAREN : ')' ;
 
 // operators
 
+ASSIGN    : ':=' ;
+COLON     : ':' ;
+SEMICOLON : ';' ;
+
 PLUS  : '+' ;
 MINUS : '-' ;
 STAR  : '*' ;
 SLASH : '/' ;
 CARET : '^' ;
+
+
+IDENTIFIER
+    : [a-zA-Z][a-zA-Z0-9]*
+    ;
 
 
 // whitespace and comments

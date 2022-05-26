@@ -11,6 +11,8 @@
   .limit stack 4
   .limit locals 2
   getstatic java/lang/System/out Ljava/io/PrintStream;
+  iconst_0
+  istore 0
   bipush 42
   bipush 2
   bipush 3
@@ -21,6 +23,8 @@
   bipush 7
   idiv
   iadd
+  istore 0
+  iload 0
   getstatic java/lang/System/out Ljava/io/PrintStream;
   ldc "The result is: "
   invokevirtual java/io/PrintStream/print(Ljava/lang/String;)V

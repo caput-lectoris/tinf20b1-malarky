@@ -1,9 +1,8 @@
 package de.dhbw.caput.tinf20b1.malarky.ast;
 
 import de.dhbw.caput.tinf20b1.malarky.Datatype;
-import de.dhbw.caput.tinf20b1.malarky.ast.traversals.AstTraverser;
 
-public abstract class ArithmeticExpression {
+public abstract class ArithmeticExpression extends AstNode {
 	
 	protected Datatype datatype;
 	
@@ -14,7 +13,5 @@ public abstract class ArithmeticExpression {
 	public Datatype datatype( ){
 		return datatype;
 	}
-	
-	public abstract <T> T accept( AstTraverser<T> traverser );
 
 }
