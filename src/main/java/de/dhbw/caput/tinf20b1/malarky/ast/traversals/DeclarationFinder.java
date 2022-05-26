@@ -8,6 +8,7 @@ import de.dhbw.caput.tinf20b1.malarky.ast.Assignment;
 import de.dhbw.caput.tinf20b1.malarky.ast.AstNode;
 import de.dhbw.caput.tinf20b1.malarky.ast.BinaryOperation;
 import de.dhbw.caput.tinf20b1.malarky.ast.BlockStatement;
+import de.dhbw.caput.tinf20b1.malarky.ast.IfStatement;
 import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
 import de.dhbw.caput.tinf20b1.malarky.ast.TypeCast;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
@@ -88,6 +89,11 @@ public class DeclarationFinder implements AstTraverser<String> {
 
 	@Override
 	public String visitPost( WhileStatement var ){
+		return null;
+	}
+
+	@Override
+	public String visitPost( IfStatement stmt, String condition, String ifBlock, String elseBlock ){
 		return null;
 	}
 

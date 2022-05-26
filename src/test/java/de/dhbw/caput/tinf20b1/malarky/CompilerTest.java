@@ -32,6 +32,19 @@ class CompilerTest {
 	
 	
 	@Test
+	void ifStatement1( ){
+		AstNode ast = parse( "let x : i32; if( x ){ x := 5; }" );
+		assertThat( ast.toString() ).isEqualTo( "i32 x;if(x){x = 5i32;}else{}" );
+	}
+	
+	@Test
+	void ifStatement2( ){
+		AstNode ast = parse( "let x : i32; if( x ){ x := 5; }else{ x := 7; }" );
+		assertThat( ast.toString() ).isEqualTo( "i32 x;if(x){x = 5i32;}else{x = 7i32;}" );
+	}
+	
+	
+	@Test
 	void syntacticAnalysis( ){
 		AstNode ast = parse( "let x : i32; x := 42 / 2i8 ^ 3 ^ 5 / 7i16 ;" );
 		assertThat( ast.toString() ).isEqualTo( "i32 x;x = ((42i32 / (2i8 ^ (3i32 ^ 5i32))) / 7i16);" );

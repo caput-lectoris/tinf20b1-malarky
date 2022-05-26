@@ -13,6 +13,7 @@ statement
     : variableDeclaration   #varDecl
     | assignment            #assign
     | whileStatement        #whileLoop
+    | ifStatement           #ifStmt
     ;
 
 variableDeclaration
@@ -25,6 +26,15 @@ assignment
 
 whileStatement
     : 'while' LPAREN sum RPAREN LBRACE statements RBRACE
+    ;
+    
+ifStatement
+    : 'if' LPAREN sum RPAREN LBRACE statements RBRACE elseStatement
+    ;
+
+elseStatement
+    : 'else' LBRACE statements RBRACE
+    |
     ;
 
 sum

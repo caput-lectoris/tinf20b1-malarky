@@ -7,6 +7,7 @@ import de.dhbw.caput.tinf20b1.malarky.ast.Assignment;
 import de.dhbw.caput.tinf20b1.malarky.ast.AstNode;
 import de.dhbw.caput.tinf20b1.malarky.ast.BinaryOperation;
 import de.dhbw.caput.tinf20b1.malarky.ast.BlockStatement;
+import de.dhbw.caput.tinf20b1.malarky.ast.IfStatement;
 import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
 import de.dhbw.caput.tinf20b1.malarky.ast.TypeCast;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
@@ -67,6 +68,11 @@ public class TypeInferer implements AstTraverser<Datatype> {
 
 	@Override
 	public Datatype visitPost( WhileStatement var ){
+		return null;
+	}
+	
+	@Override
+	public Datatype visitPost( IfStatement stmt, Datatype condition, Datatype ifBlock, Datatype elseBlock ){
 		return null;
 	}
 

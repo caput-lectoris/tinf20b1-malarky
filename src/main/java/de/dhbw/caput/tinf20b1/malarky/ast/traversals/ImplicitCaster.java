@@ -7,6 +7,7 @@ import de.dhbw.caput.tinf20b1.malarky.ast.Assignment;
 import de.dhbw.caput.tinf20b1.malarky.ast.AstNode;
 import de.dhbw.caput.tinf20b1.malarky.ast.BinaryOperation;
 import de.dhbw.caput.tinf20b1.malarky.ast.BlockStatement;
+import de.dhbw.caput.tinf20b1.malarky.ast.IfStatement;
 import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
 import de.dhbw.caput.tinf20b1.malarky.ast.Statement;
 import de.dhbw.caput.tinf20b1.malarky.ast.TypeCast;
@@ -82,6 +83,11 @@ public class ImplicitCaster implements AstTraverser<AstNode> {
 
 	@Override
 	public AstNode visitPost( WhileStatement var ){
+		return null;
+	}
+	
+	@Override
+	public AstNode visitPost( IfStatement stmt, AstNode condition, AstNode ifBlock, AstNode elseBlock ){
 		return null;
 	}
 

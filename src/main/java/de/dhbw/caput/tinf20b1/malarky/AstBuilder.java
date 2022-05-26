@@ -9,6 +9,8 @@ import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.DivideContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.EmptyFactorContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.EmptySummandContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.ExponentiationContext;
+import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.IfStatementContext;
+import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.IfStmtContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.ImpotenceContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.LiteralContext;
 import de.dhbw.caput.tinf20b1.malarky.MalarkyParser.MultiStatementsContext;
@@ -32,6 +34,7 @@ import de.dhbw.caput.tinf20b1.malarky.ast.AstNode;
 import de.dhbw.caput.tinf20b1.malarky.ast.BinaryOperation;
 import de.dhbw.caput.tinf20b1.malarky.ast.BinaryOperation.Type;
 import de.dhbw.caput.tinf20b1.malarky.ast.BlockStatement;
+import de.dhbw.caput.tinf20b1.malarky.ast.IfStatement;
 import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
 import de.dhbw.caput.tinf20b1.malarky.ast.Statement;
 import de.dhbw.caput.tinf20b1.malarky.ast.UnaryOperation;
@@ -109,6 +112,15 @@ class AstBuilder extends MalarkyBaseVisitor<AstNode> {
 	}
 	
 	/*
+	 * statement : ifStatement  #ifStmt ;
+	 */
+	@Override
+	public AstNode visitIfStmt( IfStmtContext ctx ){
+		AstNode ifStatment = visit( ctx.ifStatement() );
+		return ifStatment;
+	}
+	
+	/*
 	 * variableDeclaration : 'let' name=IDENTIFIER COLON type=IDENTIFIER SEMICOLON ;
 	 */
 	@Override
@@ -143,6 +155,24 @@ class AstBuilder extends MalarkyBaseVisitor<AstNode> {
 		WhileStatement whileStatement = new WhileStatement( expr, block );
 		block = previousBlock;
 		return whileStatement;
+	}
+	
+	/*
+	 * ifStatement : 'if' LPAREN sum RPAREN LBRACE statements RBRACE elseStatement ;
+	 */
+	@Override
+	public AstNode visitIfStatement( IfStatementContext ctx ){
+		BlockStatement ifBlock = new BlockStatement();
+		BlockStatement elseBlock = new BlockStatement();
+		ArithmeticExpression expr = (ArithmeticExpression) visit( ctx.sum() );
+		BlockStatement previousBlock = block;
+		block = ifBlock;
+		visit( ctx.statements() );
+		block = elseBlock;
+		visit( ctx.elseStatement() );
+		IfStatement ifStatement = new IfStatement( expr, ifBlock, elseBlock );
+		block = previousBlock;
+		return ifStatement;
 	}
 	
 	/*

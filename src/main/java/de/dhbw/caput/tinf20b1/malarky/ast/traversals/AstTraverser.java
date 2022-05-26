@@ -6,6 +6,7 @@ import java.util.List;
 import de.dhbw.caput.tinf20b1.malarky.ast.Assignment;
 import de.dhbw.caput.tinf20b1.malarky.ast.BinaryOperation;
 import de.dhbw.caput.tinf20b1.malarky.ast.BlockStatement;
+import de.dhbw.caput.tinf20b1.malarky.ast.IfStatement;
 import de.dhbw.caput.tinf20b1.malarky.ast.NumericLiteral;
 import de.dhbw.caput.tinf20b1.malarky.ast.Statement;
 import de.dhbw.caput.tinf20b1.malarky.ast.TypeCast;
@@ -63,9 +64,17 @@ public interface AstTraverser<T> {
 	}
 	T visitPost( Variable var );
 	
-	default T visit( WhileStatement var ){
-		return visitPost( var );
+	default T visit( WhileStatement stmt ){
+		return visitPost( stmt );
 	}
-	T visitPost( WhileStatement var );
+	T visitPost( WhileStatement stmt );
+	
+	default T visit( IfStatement stmt ){
+		T condition = stmt.CONDITION.accept( this );
+		T ifBlock = stmt.IF_BLOCK.accept( this );
+		T elseBlock = stmt.ELSE_BLOCK.accept( this );
+		return visitPost( stmt, condition, ifBlock, elseBlock );
+	}
+	T visitPost( IfStatement stmt, T condition, T ifBlock, T elseBlock );
 
 }
