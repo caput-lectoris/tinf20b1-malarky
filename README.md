@@ -1,0 +1,8 @@
+# KA-TINF20B1: malarky
+
+> 📝 **Please Note:** This repository is part of a lecture series on compiler construction at the [Baden-Württemberg Cooperative State University Karlsruhe](https://www.karlsruhe.dhbw.de/en/general/about-dhbw-karlsruhe.html) in Germany. Special to this university are the career-integrated undergraduate study programs. In alternating three-month phases, students learn theory at the university and receive practical training from an enterprise. The students have an employment contract, and throughout the entire period, they receive a monthly salary and have the insurance status of employees. For a listing of lecture content, see section T3INF4211 in the [university's module handbook](https://www.dhbw.de/fileadmin/user/public/SP/KA/Informatik/Informatik.pdf).
+
+Typically, my lectures include regular challenges that my students are expected to solve at home as part of their independent study. This repo is therefore intentionally incomplete. So please don't be surprised if the project already contains errors right after cloning. The project develops dynamically during the lecture and today's errors are tomorrow's tasks :)
+
+## Prerequisites
+Our compiler currently generates Java bytecode. To avoid having to generate the *.class files ourselves, we use the Java Assembler Interface, or Jasmin for short. For more convenient use in our compiler, I wrote a small wrapper for Jasmin. Because I intend to extend the wrapper and use it in other projects, I swapped it out in project [tinf20b1-jasmine](https://github.com/caput-lectoris/tinf20b1-jasmine). For the build to succeed, you must first clone my Jasmin extension and run the target "Maven Install".
